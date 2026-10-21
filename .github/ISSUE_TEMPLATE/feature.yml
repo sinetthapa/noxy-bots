@@ -1,0 +1,16 @@
+name: Feature idea
+description: Something Nox could do. Let's talk about it before anyone builds it.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The problem, not the solution yet.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: Your idea, and anything you tried.

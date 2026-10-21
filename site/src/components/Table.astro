@@ -1,0 +1,5 @@
+---
+// A docs page's Markdown table (mapped to <table> in [...slug].astro): on a narrow screen it scrolls inside this box, not the page,
+// and stays a real table for screen readers (display: block on the table itself drops that in Safari).
+---
+<div class="mt-4 overflow-x-auto"><table><slot /></table></div>

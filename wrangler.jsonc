@@ -1,0 +1,16 @@
+// The site Worker (M5 spec §9.1): static assets from dist-site/, the script only for the PostHog proxy.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "noxy",
+  "main": "site/worker.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false, // no workers.dev URL; the launch step adds the noxybots.com route
+  "preview_urls": true, // branch Previews from Workers Builds stay reachable until launch
+  "previews": {}, // Previews don't inherit production settings; top-level assets are enough
+  "assets": {
+    "directory": "dist-site",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/ingest/*"]
+  }
+}

@@ -1,0 +1,19 @@
+---
+// The calls to action (M5 spec §4.3): GitHub star after launch, then the socials. Support has its own card (Support.astro). Surface buttons; orange is kept for each area's main action.
+// `icons`: icon buttons, named for screen readers (the footer, the user 2026-10-18).
+import { Mail, Star } from 'lucide-react';
+import { button } from '../../../studio/src/components/ui/button.tsx';
+import { LAUNCHED, LINKS } from '../site.ts';
+import Brand from './Brand.astro';
+
+const { icons = false } = Astro.props as { icons?: boolean };
+const cls = button(icons ? { size: 'icon' } : {});
+const name = (label: string) => (icons ? { 'aria-label': label, title: label } : {});
+---
+<div class="flex flex-wrap gap-2">
+  {LAUNCHED && <a href={LINKS.github} rel="noopener" class={cls} data-track="github" {...name('Star on GitHub')}>{icons ? <Brand name="github" /> : <><Star /> Star on GitHub</>}</a>}
+  <a href={LINKS.instagram} rel="noopener" class={cls} data-track="instagram" {...name('Instagram')}><Brand name="instagram" />{!icons && ' Instagram'}</a>
+  <a href={LINKS.x} rel="noopener" class={cls} data-track="x" {...name('X')}><Brand name="x" />{!icons && ' X'}</a>
+  <a href={LINKS.linkedin} rel="noopener" class={cls} data-track="linkedin" {...name('LinkedIn')}><Brand name="linkedin" />{!icons && ' LinkedIn'}</a>
+  <a href={LINKS.email} class={cls} data-track="email" {...name('Email')}><Mail />{!icons && ' Email'}</a>
+</div>

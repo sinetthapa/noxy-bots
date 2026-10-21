@@ -1,0 +1,14 @@
+---
+import { LAUNCHED, LINKS } from '../site.ts';
+import Base from '../layouts/Base.astro';
+---
+<Base title="Privacy · Noxy" description="What noxybots.com records, and what it doesn't.">
+  <article class="mx-auto grid max-w-prose gap-4 px-4 pt-16 leading-relaxed">
+    <h1 class="text-4xl font-bold tracking-[-0.02em]">Privacy</h1>
+    <p>This site counts visits with PostHog in cookieless mode. It sets no cookies and stores nothing in your browser for analytics. There are no accounts and no visitor profiles.</p>
+    <p>It records which pages are viewed (the address without anything after <code>?</code> or <code>#</code>, plus any campaign tags it had, such as <code>utm_source</code>, with ad click IDs like <code>gclid</code> masked) and a few actions: exporting from the studio, copying code, a link or the install command, and clicking through to GitHub, Instagram, X, LinkedIn, email or Buy Me a Coffee. It never records what you typed or what your bot looks like.</p>
+    <p>PostHog receives your IP address and browser string with each event. It uses them only to compute a daily anonymous visitor count, then discards the IP address. It doesn't look up your location.</p>
+    <p>The studio's settings stay in the page address and your browser. Exports are made in your browser and never uploaded.</p>
+    <p>Questions? Message me on <a class="underline" href={LINKS.instagram} rel="noopener">Instagram</a>{LAUNCHED && <> or open an issue on <a class="underline" href={LINKS.github} rel="noopener">GitHub</a></>}.</p>
+  </article>
+</Base>

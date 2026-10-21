@@ -1,0 +1,183 @@
+/* DESIGN.md tokens on shadcn's variable names, Tailwind v4. */
+@import 'tailwindcss';
+@source '../../site/src';
+@source '.';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #f1f5fb;
+  --foreground: #1f2533;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --popover-foreground: #1f2533;
+  --primary: #fa6c2e;
+  --primary-foreground: #1f2533;
+  --secondary: #e8eff9;
+  --muted: #e8eff9;
+  --muted-foreground: #5f6880;
+  --border: #dfe6f1;
+  --input: #dfe6f1;
+  --ring: #fa6c2e;
+  --radius: 14px;
+  --stage-cool: #6c8cff;
+  --accent-drop: color-mix(in oklch, var(--primary) 70%, black);
+  /* Shadows and the pressable drop: ink and line here; in dark both go darker than the surface, never light (the user, 2026-10-15). */
+  --shadow: var(--foreground);
+  --drop: var(--border);
+  color-scheme: light;
+}
+.dark {
+  --background: #111622;
+  --foreground: #eef2fa;
+  --card: #1a2030;
+  --popover: #1a2030;
+  --popover-foreground: #eef2fa;
+  --secondary: #232b3e;
+  --muted: #232b3e;
+  --muted-foreground: #9aa5be;
+  --border: #2a3246;
+  --input: #2a3246;
+  --shadow: #000000;
+  --drop: #0b0e16;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-lg: var(--radius);
+  --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Nunito Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, Menlo, monospace;
+}
+
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .card {
+    min-width: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 1px 0 var(--drop), 0 8px 24px -14px color-mix(in oklch, var(--shadow) 40%, transparent);
+  }
+  /* Chunky pressable controls: 2px border and a 2px drop that shrinks on press. */
+  .pressable {
+    border: 2px solid var(--border);
+    box-shadow: 0 2px 0 var(--drop);
+    transition: background-color 120ms, border-color 120ms, color 120ms, box-shadow 80ms, transform 80ms;
+  }
+  .pressable:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 var(--drop);
+  }
+  /* The studio's full-page mesh (DESIGN.md The stage), in Nox's colours (the user, 2026-10-15/16): orange top left, stage-cool top
+     right, the eye's cyan behind the bot, violet low right, on bg. Fixed, so a scrolling phone page doesn't stretch the blobs. */
+  .studio {
+    background:
+      radial-gradient(48% 52% at 6% 0%, color-mix(in oklch, var(--primary) 28%, transparent), transparent 72%),
+      radial-gradient(52% 58% at 72% 4%, color-mix(in oklch, var(--stage-cool) 30%, transparent), transparent 70%),
+      radial-gradient(38% 44% at 36% 48%, color-mix(in oklch, #2ec7e6 14%, transparent), transparent 72%),
+      radial-gradient(56% 50% at 92% 100%, color-mix(in oklch, #8b5cf6 22%, transparent), transparent 70%),
+      radial-gradient(44% 40% at 4% 100%, color-mix(in oklch, var(--primary) 16%, transparent), transparent 72%),
+      var(--background);
+    background-attachment: fixed;
+  }
+  /* Dark: the same blobs, a little softer, cool low left. The shorthand resets attachment, so it's set again. */
+  .dark .studio {
+    background:
+      radial-gradient(48% 52% at 6% 0%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 72%),
+      radial-gradient(52% 58% at 72% 4%, color-mix(in oklch, var(--stage-cool) 26%, transparent), transparent 70%),
+      radial-gradient(38% 44% at 36% 48%, color-mix(in oklch, #2ec7e6 11%, transparent), transparent 72%),
+      radial-gradient(56% 50% at 92% 100%, color-mix(in oklch, #8b5cf6 20%, transparent), transparent 70%),
+      radial-gradient(44% 40% at 4% 100%, color-mix(in oklch, var(--stage-cool) 12%, transparent), transparent 72%),
+      var(--background);
+    background-attachment: fixed;
+  }
+  /* The studio's Nox, and the home hero's, floats higher over a blurred shadow (#stage-shadow in Stage.tsx and index.astro). Page CSS only: the library art and exports keep theirs.
+     CSS translate composes with the renderer's transform attribute; SVG elements take url() filters in every engine. */
+  .stage-bot svg { overflow: visible; }
+  .stage-bot [id$='-nox'] { translate: 0 -36px; }
+  .stage-bot [id$='-shadow'] { filter: url(#stage-shadow); }
+  /* Code colours (highlight() in snippets.ts), for dark code blocks only: Nox's own palette, each AA on the dark --background. */
+  .t-kw { color: #ff9a6b; }
+  .t-str { color: #9fd8c8; }
+  .t-tag { color: #93a8ff; }
+  .t-attr, .t-key { color: #f4c97a; }
+  .t-num { color: #f4a9c8; }
+  .t-com { color: var(--muted-foreground); }
+  /* Shadows at a scroll box's edges while there is more to scroll: the card-coloured covers scroll with the content. */
+  .scroll-shadows {
+    background:
+      linear-gradient(var(--card) 30%, transparent) top / 100% 40px no-repeat local,
+      linear-gradient(transparent, var(--card) 70%) bottom / 100% 40px no-repeat local,
+      radial-gradient(farthest-side at 50% 0, color-mix(in oklch, var(--shadow) 16%, transparent), transparent) top / 100% 12px no-repeat scroll,
+      radial-gradient(farthest-side at 50% 100%, color-mix(in oklch, var(--shadow) 16%, transparent), transparent) bottom / 100% 12px no-repeat scroll,
+      var(--card);
+  }
+}
+
+/* Unlayered, so it wins over every control's own shadow. Light mode adds a 1px ink ring inside the orange (DESIGN.md). */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+:root:not(.dark) :focus-visible {
+  box-shadow: 0 0 0 1px var(--background), 0 0 0 2px var(--foreground);
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+  }
+}
+/* react-colorful in the colour popover (Controls.tsx): the popover's width and the gaze pad's 12px radius. Unlayered and one class
+   more specific, to beat the style the library injects. */
+.picker.react-colorful { width: 100%; height: 150px; }
+.picker .react-colorful__saturation { border-radius: 12px 12px 0 0; }
+.picker .react-colorful__last-control { border-radius: 0 0 12px 12px; }
+
+/* DESIGN.md Components: the export progress bar, a chip track with an orange fill. */
+@layer components {
+  .progress {
+    appearance: none;
+    height: 8px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--muted);
+    overflow: hidden;
+  }
+  .progress::-webkit-progress-bar {
+    background: var(--muted);
+  }
+  .progress::-webkit-progress-value {
+    background: var(--primary);
+    border-radius: 999px;
+  }
+  .progress::-moz-progress-bar {
+    background: var(--primary);
+    border-radius: 999px;
+  }
+}

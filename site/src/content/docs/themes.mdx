@@ -1,0 +1,19 @@
+---
+title: Themes and colours
+description: Five themes to start from, or five colours of your own.
+order: 4
+---
+
+## themes
+
+`classic` is the default. The others are `midnight`, `mint`, `bubblegum` and `onyx`.
+
+<Demo attrs="theme=midnight" />
+
+## your own colours
+
+Five attributes set the colours: `color-shell`, `color-screen`, `color-eye`, `color-accent` and `color-mouth`, each a hex like `#7cffcb`. Any you leave out come from the theme, and Nox works out the shading itself. That shading starts from a light top, so custom colours don't suit `onyx`, which is shaded by hand.
+
+<Demo attrs="theme=midnight color-eye=#7cffcb color-accent=#ff4f9a" />
+
+In React and JS, give `look.theme` all five as `base`, as the code above shows.

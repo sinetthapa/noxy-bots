@@ -1,0 +1,62 @@
+---
+title: API reference
+description: Every attribute, option and method, in one place.
+order: 5
+---
+
+## attributes
+
+For `<noxy-bot>`. A bad value is ignored, with a `noxy-bots:` warning in the console.
+
+| Attribute | Values | Default |
+| --- | --- | --- |
+| `state` | any of the 29 [states](/docs/states) | `idle` |
+| `theme` | `classic`, `midnight`, `mint`, `bubblegum`, `onyx` | `classic` |
+| `body` | `nox`, `box` | `nox` |
+| `ears` | `nox`, `antenna`, `none` | `nox` |
+| `eyes` | `capsule`, `round` | `capsule` |
+| `bolts` | `nox`, `none` | `nox` |
+| `eye-size`, `eye-spacing`, `ear-size`, `bolt-size` | 0.7 to 1.3 | 1 |
+| `color-shell`, `color-screen`, `color-eye`, `color-accent`, `color-mouth` | a hex, like `#7cffcb` | from the theme |
+| `personality` | `default`, `chill`, `curious`, `bouncy`, `shy` | `default` |
+| `energy`, `bounce`, `squish`, `blink`, `glance`, `wiggle`, `head`, `snap` | 0 to 2 | from the personality |
+| `speed` | 0.1 to 4 | 1 |
+| `seed` | a whole number, 0 to 4294967295 | random |
+| `motion` | `auto`, `full`, `calm`, `still` | `auto` (`still` for reduced motion) |
+| `fps` | a whole number, 1 to 60 | 30 |
+| `label` | what a screen reader says | none, so Nox is decorative |
+
+`el.bot` gives you the bot, and `el.bot.look` its current look. `el.look` sets a look from JS, such as a custom theme; attributes win over it. A bad one warns and keeps the last good look.
+
+## options
+
+For `<NoxyBot>` and `createBot(host, options)`. `createBot` throws on a bad option; `<NoxyBot>` warns and skips it.
+
+| Option | Type | Notes |
+| --- | --- | --- |
+| `look` | `{ body, ears, eyes, bolts, theme, sizes }` | merged onto the default look; `sizes` is `{ eye, eyeSpacing, ear, bolt }`; `theme` is a name or `{ base: { shell, screen, eye, accent, mouth } }` |
+| `state` | a state name | Nox starts already in it |
+| `personality` | a personality name | as the attribute |
+| `energy` … `snap` | 0 to 2, or `null` | `null` goes back to the personality's value |
+| `speed`, `seed`, `motion`, `fps`, `label` | as the attributes | `seed` is read once, when Nox is made |
+| `className`, `style` | React only | on the box Nox draws into |
+
+## methods
+
+From `createBot`, `el.bot` or a `ref`.
+
+| Method | What it does |
+| --- | --- |
+| `state(name)` | sets any state, from any layer; a base also clears the activity and emotion, an activity wakes a sleeping Nox |
+| `base(name)` | sets the base alone |
+| `activity(name)` | sets the activity, or clears it with `null` |
+| `emotion(name, holdMs?)` | sets the emotion, for `holdMs` if given; `null` clears it |
+| `play(event)` | plays an event once |
+| `notify()` | plays `notification` and keeps the badge up until `seen()` |
+| `seen()` | clears the badge |
+| `lookAt(x, y)` | holds the eyes on a point, −1 to 1 each way (+x right, −y up); `lookAt(null)` goes back to looking around |
+| `update(options)` | changes any option except `seed` and `state`; a `look` merges onto the current one |
+| `look` | the current look, read-only |
+| `pause()`, `resume()`, `paused` | stops and restarts the animation; off screen, Nox skips its frames on its own |
+| `snapshot()` | the current frame as an SVG string |
+| `destroy()` | removes Nox; after that, any other call throws |

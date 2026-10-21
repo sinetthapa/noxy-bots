@@ -1,0 +1,27 @@
+---
+// The user's photo (src/assets/me.jpg, an 800px master; Astro writes AVIF/WebP/JPEG at 240 and 480px) and their words (2026-10-16;
+// M5 spec §4.4). Photo left, text right (docs/landing/section-plan.md, Header19); stacked on phones. The GitHub links wait for launch; the footer leaves out the socials and support card shown here.
+import { Picture } from 'astro:assets';
+import CtaButtons from '../components/CtaButtons.astro';
+import Support from '../components/Support.astro';
+import Base from '../layouts/Base.astro';
+import me from '../assets/me.jpg';
+import { LAUNCHED, LINKS } from '../site.ts';
+---
+<Base title="About · Noxy" description="Who makes Noxy, and why.">
+  <article class="mx-auto grid max-w-3xl gap-8 px-4 pt-16 leading-relaxed sm:grid-cols-[240px_1fr] sm:items-start">
+    <Picture src={me} width={240} densities={[2]} formats={['avif', 'webp']} priority alt="Sinet in a black cap and T-shirt, against an orange glow." class="size-60 rounded-[24px]" />
+    <div class="grid gap-4 text-pretty">
+      <h1 class="text-4xl font-bold tracking-[-0.02em]">About</h1>
+      <p>Hey, I’m Sinet, a creative full-stack engineer who enjoys working at the intersection of design, technology, and experimentation.</p>
+      <p>Noxybots originally started as something I built for one of my own projects. I wasn’t planning to turn it into a standalone project, but somewhere along the way it became way too cute to keep to myself.</p>
+      <p>So I decided to publish it.</p>
+      <p>The idea is simple: create something playful and useful that other designers, developers, creative heads, and curious builders can use in their own projects.</p>
+      <p>A little about me: I’ve spent the last 5+ years designing and building web and mobile products across full-stack engineering, UI/UX, mobile development, and creative technology.</p>
+      <p>Noxybots is still evolving, so feedback is very welcome. If you find a bug, have an idea for a new feature, or want to contribute, feel free to {LAUNCHED && <><a class="underline" href={`${LINKS.github}/issues`} rel="noopener" data-track="github">open an issue</a> or </>}reach out.</p>
+      <CtaButtons />
+      <Support />
+      <p>Thanks for checking out Noxybots. :)</p>
+    </div>
+  </article>
+</Base>

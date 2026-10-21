@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and ideas
+    url: https://github.com/sinetthapa/noxy-bots/discussions
+    about: Ask anything or share what you made in Discussions.

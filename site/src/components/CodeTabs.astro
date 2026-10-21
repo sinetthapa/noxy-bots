@@ -1,0 +1,28 @@
+---
+// Code tabs with a Copy button (M5 spec §6.2), for the landing's code window and every docs Demo; code.ts wires them. Dark in
+// both schemes (DESIGN.md Type). The first tab starts selected with its code in place, so nothing shifts when the script runs.
+import { Copy } from 'lucide-react';
+import { button } from '../../../studio/src/components/ui/button.tsx';
+import { highlight } from '../../../studio/src/snippets.ts';
+
+interface Props {
+  id: string;
+  tabs: readonly (readonly [id: string, label: string])[];
+  /** The first tab's code. */
+  code: string;
+  class?: string;
+}
+const { id, tabs, code, class: cls } = Astro.props;
+---
+<div id={id} data-code-tabs class:list={['dark grid bg-card text-foreground', cls]}>
+  <div class="flex items-center gap-1 border-b border-border p-2">
+    <div class="flex items-center gap-1" role="tablist" aria-label="Code format">
+      {tabs.map(([t, label], i) => (
+        <button type="button" role="tab" id={`${id}-${t}`} data-tab={t} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`${id}-panel`} tabindex={i === 0 ? 0 : -1}
+          class="h-8 cursor-pointer rounded-lg px-3 font-display text-[13px] font-semibold text-muted-foreground aria-selected:bg-muted aria-selected:text-foreground pointer-coarse:h-10">{label}</button>
+      ))}
+    </div>
+    <button type="button" data-copy class={button({ size: 'sm' }) + ' ml-auto'}><Copy /> <span>Copy</span></button>
+  </div>
+  <pre id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-${tabs[0][0]}`} tabindex="0" class="overflow-x-auto bg-background p-5 font-mono text-[13px] leading-relaxed"><code set:html={highlight(code)} /></pre>
+</div>

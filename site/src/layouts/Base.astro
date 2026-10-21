@@ -1,0 +1,70 @@
+---
+// Every page (M5 spec §4): DESIGN.md styles and fonts, the scheme set before first paint, header, footer, analytics.
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/nunito-sans';
+import '@fontsource-variable/geist-mono';
+import '../../../studio/src/styles.css';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { pathOf } from '../site.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  /** /studio: an app on the full-page gradient. The header is its app bar (with the studio's scheme switch), the footer shows only where the page scrolls (≤ 860px). */
+  studio?: boolean;
+  /** The home page's first-visit intro (landing-client.ts): content hidden before first paint until Nox lands. */
+  intro?: boolean;
+}
+const { title, description, studio = false, intro = false } = Astro.props;
+const path = pathOf(Astro.url);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {path !== '/404' && <link rel="canonical" href={new URL(path, Astro.site)} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/nox.svg" type="image/svg+xml" />
+    <script is:inline>
+      // Dark before first paint when the saved scheme says so; light by default (studio/src/prefs.ts); storage can throw in private windows.
+      try {
+        var s = localStorage.getItem('noxy-studio-scheme');
+        if (s === 'dark') document.documentElement.classList.add('dark');
+      } catch (e) {}
+    </script>
+    {intro && (
+      <script is:inline>
+        // Once per tab, never with reduced motion or a #link. The timeout shows the page if the landing script never runs.
+        try {
+          if (!sessionStorage.getItem('noxy-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches && !location.hash) {
+            document.documentElement.classList.add('intro');
+            setTimeout(function () { document.documentElement.classList.remove('intro'); }, 6000);
+          }
+        } catch (e) {}
+      </script>
+    )}
+  </head>
+  <body class:list={['flex min-h-dvh flex-col', studio && 'studio']}>
+    <Header studio={studio} />
+    <main class="flex-1"><slot /></main>
+    {studio ? <div class="min-[861px]:hidden"><Footer /></div> : <Footer />}
+    <script>
+      // Analytics (M5 spec §8). The code lives here, not in a bare `import './x.ts'`: package.json's
+      // sideEffects list would let the bundler drop that import.
+      import { start, track } from '../analytics.ts';
+
+      (globalThis as { noxyTrack?: typeof track }).noxyTrack = track; // studio/src/track.ts calls this
+      document.addEventListener('click', (e) => {
+        const a = (e.target as Element | null)?.closest<HTMLElement>('[data-track]');
+        if (a?.dataset.track) track('outbound_click', { target: a.dataset.track });
+      });
+      void start();
+    </script>
+  </body>
+</html>

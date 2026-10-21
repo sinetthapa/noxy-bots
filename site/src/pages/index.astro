@@ -1,0 +1,166 @@
+---
+// The landing page (M5 spec §5, revised by the user 2026-10-13): direction B's hero with C's mini bots, A's code section in a dark window,
+// C's export tiles, A's dark closing card. Headings start lower case, like the wordmark.
+import { ArrowRight, Dices, FileCode2, Film, Image, Sparkles } from 'lucide-react';
+import { nox } from 'noxy-bots';
+import { button } from '../../../studio/src/components/ui/button.tsx';
+import { snippet } from '../../../studio/src/snippets.ts';
+import { DEFAULTS } from '../../../studio/src/state.ts';
+import CodeTabs from '../components/CodeTabs.astro';
+import Base from '../layouts/Base.astro';
+import { DESCRIPTION, LAUNCHED } from '../site.ts';
+
+const MOODS = ['idle', 'happy', 'thinking', 'love', 'processing', 'curious', 'sleep'] as const;
+const MINIS = [
+  { theme: 'classic', state: 'happy' },
+  { theme: 'midnight', state: 'thinking', ears: 'antenna' },
+  { theme: 'mint', state: 'love' },
+  { theme: 'bubblegum', state: 'curious' },
+];
+const FORMATS = [
+  { name: 'SVG', icon: FileCode2, line: 'Nox, sharp at any size. Give it a spot in your docs or slides.', tint: 'var(--primary)' },
+  { name: 'PNG', icon: Image, line: 'Just Nox, no background. A transparent PNG up to 2048 px.', tint: 'var(--stage-cool)' },
+  { name: 'MP4', icon: Film, line: 'Nox on a loop, ready for your next post or demo.', tint: '#2fb592' },
+  { name: 'Lottie', icon: Sparkles, line: 'Nox in motion, for projects that already run Lottie.', tint: '#ec5f9e' },
+];
+// The o's of "bots" and "project" in the headline are Nox heads that follow the cursor (data-follow), in the letters' colour:
+// Onyx on light, Classic on dark. The second has round eyes, bolts and Mint's screen and eye (the user, 2026-10-16).
+const OS = [{ theme: 'onyx', cls: 'dark:hidden' }, { theme: 'classic', cls: 'hidden dark:block' }];
+const base = (id: string) => nox.themes.find((t) => t.id === id)!.base;
+const noxO = (eyes: string, bolts: string, colors?: { screen: string; eye: string }) => OS.map((o) => ({ cls: o.cls, bot: JSON.stringify({ look: { theme: colors ? { base: { ...base(o.theme), ...colors } } : o.theme, eyes, ears: 'none', bolts } }) }));
+const BOTS_O = noxO('capsule', 'none'), PROJECT_O = noxO('round', 'nox', { screen: '#1E3B38', eye: '#7CFFCB' });
+const TABS = [['html', 'HTML'], ['react', 'React'], ['js', 'JS'], ['lottie', 'Lottie']] as const;
+const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+const chip = 'inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full px-3.5 font-display text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground aria-pressed:bg-primary aria-pressed:text-primary-foreground [&_svg]:size-4';
+const h2 = 'text-[clamp(32px,5vw,56px)] leading-none font-bold tracking-[-0.03em]';
+---
+<Base title="noxybots · A little animated bot for your UI" description={DESCRIPTION} intro>
+  <!-- Hero -->
+  <section class="mx-auto grid max-w-[1180px] justify-items-center gap-5 px-4 pt-10 text-center min-[861px]:pt-14">
+    <a href="/studio" data-intro="2" class="rise group inline-flex h-8 items-center gap-2 rounded-full border border-border bg-card py-1 pr-3 pl-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground">
+      <span class="rounded-full bg-primary px-2 py-0.5 font-display text-[11px] font-semibold text-primary-foreground">New</span>
+      Lottie export is here <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+    </a>
+    <h1 data-intro="2" class="rise max-w-[20ch] text-[clamp(42px,7.5vw,84px)] leading-[0.92] font-bold tracking-[-0.035em] text-balance [animation-delay:60ms]">cute, expressive <span class="whitespace-nowrap">b<span class="nox-o"><span class="sr-only">o</span>{BOTS_O.map((o) => <span class={o.cls} data-follow data-bot={o.bot} aria-hidden="true"></span>)}</span>ts</span> for your&nbsp;<span class="whitespace-nowrap">pr<span class="nox-o nox-o-bolts"><span class="sr-only">o</span>{PROJECT_O.map((o) => <span class={o.cls} data-follow data-bot={o.bot} aria-hidden="true"></span>)}</span>ject.</span></h1>
+    <p data-intro="3" class="rise max-w-[46ch] text-base text-balance text-muted-foreground [animation-delay:120ms]">Nox blinks, glances around and naps. One tag puts it in your project.</p>
+    <div data-intro="4" class="rise flex flex-wrap justify-center gap-3 [animation-delay:180ms]">
+      <a href="/studio" class={button({ variant: 'primary' }) + ' h-11 px-5 text-[15px]'}>Play with Nox <ArrowRight /></a>
+      <span class="inline-flex h-11 items-center gap-2 rounded-lg border-2 border-dashed border-border px-3 font-mono text-[13px] text-muted-foreground">
+        npm i noxy-bots {!LAUNCHED && <span class="rounded-full bg-muted px-2 py-0.5 font-display text-[11px] font-semibold">Soon</span>}
+      </span>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1180px] px-4 pt-10 pb-20">
+    <div id="stage" class="rise relative isolate grid gap-5 overflow-hidden rounded-[32px] p-3 pt-5 min-[861px]:block min-[861px]:min-h-[500px] min-[861px]:p-0 [animation-delay:220ms]">
+      <div data-intro="0" class="spot absolute inset-0 -z-10 rounded-[inherit] border border-border" aria-hidden="true"></div>
+      <div data-intro="5" class="flex items-center gap-1.5 justify-self-center min-[861px]:absolute min-[861px]:top-5 min-[861px]:right-5 min-[861px]:z-[1]" role="group" aria-label="Theme">
+        {MINIS.map((m) => (
+          <button type="button" data-theme={m.theme} aria-label={`${cap(m.theme)} theme`} aria-pressed={m.theme === 'classic' ? 'true' : 'false'}
+            class="pressable w-14 cursor-pointer rounded-[16px] bg-card p-1 aria-pressed:border-primary aria-pressed:shadow-[0_2px_0_var(--accent-drop)]">
+            <div data-bot={JSON.stringify({ look: { theme: m.theme, ...(m.ears ? { ears: m.ears } : {}) }, state: m.state })} aria-hidden="true"></div>
+          </button>
+        ))}
+      </div>
+      <div class="grid place-items-center min-[861px]:absolute min-[861px]:inset-0 min-[861px]:pb-16">
+        <!-- Nox floats over a soft shadow, like the studio's (.stage-bot in styles.css; the filter is Stage.tsx's) -->
+        <svg aria-hidden="true" class="absolute size-0"><filter id="stage-shadow" y="-150%" height="400%"><feGaussianBlur stdDeviation="9" /></filter></svg>
+        <div id="hero-bot" class="stage-bot w-[min(320px,64%)] origin-bottom touch-manipulation" aria-hidden="true"></div>
+      </div>
+      <div data-intro="5" class="z-[1] mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-1 rounded-[22px] border border-border bg-card p-1.5 shadow-[0_12px_32px_-16px_color-mix(in_oklch,var(--shadow)_45%,transparent)] min-[861px]:absolute min-[861px]:inset-x-3 min-[861px]:bottom-4">
+        <div class="flex flex-wrap justify-center gap-0.5" role="group" aria-label="Mood">
+          {MOODS.map((m) => <button type="button" class={chip} data-mood={m} aria-pressed={m === 'idle' ? 'true' : 'false'}>{cap(m)}</button>)}
+        </div>
+        <span class="mx-1 hidden h-6 w-px bg-border min-[700px]:block"></span>
+        <button type="button" id="shuffle" class={chip}><Dices /> Randomize</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drop it in -->
+  <section data-intro="6" class="mx-auto grid max-w-[1180px] items-center gap-8 px-4 py-16 min-[861px]:grid-cols-[1fr_1.3fr]">
+    <div class="grid gap-3">
+      <h2 class={h2}>drop it in.</h2>
+      <p class="max-w-[44ch] text-base text-pretty text-muted-foreground">Use an HTML tag, a React component, plain JS or Lottie. Try a different mood above and the code follows along.</p>
+    </div>
+    <CodeTabs id="code" tabs={TABS} code={snippet(DEFAULTS, 'html')} class="card overflow-hidden [&_pre]:min-h-[300px]" />
+  </section>
+
+  <!-- Export anywhere -->
+  <section data-intro="6" class="mx-auto grid max-w-[1180px] gap-8 px-4 py-16">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div class="grid gap-3">
+        <h2 class={h2}>take Nox along.</h2>
+        <p class="max-w-[52ch] text-base text-muted-foreground">Want Nox for a slide or a post? Make it your own in the studio, then export it. It all renders in your browser.</p>
+      </div>
+      <a href="/studio" class="inline-flex items-center gap-1.5 font-display text-sm font-semibold underline decoration-primary decoration-2 underline-offset-4">Choose your export <ArrowRight className="size-4" /></a>
+    </div>
+    <ul class="grid gap-3 min-[600px]:grid-cols-2 min-[1000px]:grid-cols-4">
+      {FORMATS.map((f) => (
+        <li class="grid content-start gap-3 rounded-[24px] border p-5" style={`background: color-mix(in oklch, ${f.tint} 16%, var(--card)); border-color: color-mix(in oklch, ${f.tint} 26%, var(--card))`}>
+          <span class="grid size-10 place-items-center rounded-[14px] [&_svg]:size-5" style={`background: color-mix(in oklch, ${f.tint} 30%, var(--card))`}><f.icon /></span>
+          <h3 class="mt-3 text-[32px] leading-none font-bold tracking-[-0.03em]">{f.name}</h3>
+          <p class="text-muted-foreground">{f.line}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Closing call -->
+  <section data-intro="6" class="mx-auto max-w-[1180px] px-4 pt-16">
+    <div class="dark relative grid justify-items-center gap-5 overflow-hidden rounded-[32px] border border-border bg-card px-6 py-16 text-center text-foreground">
+      <div id="cta-bot" class="w-40 min-[861px]:w-48" aria-hidden="true"></div>
+      <h2 class={h2 + ' text-balance'}>a little Nox of your own.</h2>
+      <p class="max-w-[40ch] text-base text-muted-foreground">Maybe shy. Maybe bouncy. Play with Nox and see what feels right.</p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href="/studio" class={button({ variant: 'primary' }) + ' h-11 px-5 text-[15px]'}>Make Nox yours <ArrowRight /></a>
+        <a href="/docs" class={button() + ' h-11 px-5 text-[15px]'}>Read the docs</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* The studio's mesh (styles.css .studio, DESIGN.md The stage), placed for this card: the cyan halo sits behind the centred Nox.
+     Light is softer than the studio's (the user, 2026-10-16), so the card stays calm on the page. */
+  .spot {
+    background:
+      radial-gradient(48% 60% at 4% 0%, color-mix(in oklch, var(--primary) 18%, transparent), transparent 72%),
+      radial-gradient(52% 64% at 90% 0%, color-mix(in oklch, var(--stage-cool) 20%, transparent), transparent 70%),
+      radial-gradient(36% 50% at 50% 46%, color-mix(in oklch, #2ec7e6 10%, transparent), transparent 72%),
+      radial-gradient(56% 60% at 96% 100%, color-mix(in oklch, #8b5cf6 14%, transparent), transparent 70%),
+      radial-gradient(44% 50% at 4% 100%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 72%),
+      var(--background);
+  }
+  :global(.dark) .spot {
+    background:
+      radial-gradient(48% 60% at 4% 0%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 72%),
+      radial-gradient(52% 64% at 90% 0%, color-mix(in oklch, var(--stage-cool) 26%, transparent), transparent 70%),
+      radial-gradient(36% 50% at 50% 46%, color-mix(in oklch, #2ec7e6 11%, transparent), transparent 72%),
+      radial-gradient(56% 60% at 96% 100%, color-mix(in oklch, #8b5cf6 20%, transparent), transparent 70%),
+      radial-gradient(44% 50% at 4% 100%, color-mix(in oklch, var(--stage-cool) 12%, transparent), transparent 72%),
+      var(--background);
+  }
+  /* The headline's Nox o: a box the size of the font's o (ink 0.55em tall, 0.04em side bearings), with the bot's head scaled to fill it.
+     The svg's frame leaves room around the head (body = 60% of the frame's width, starting 20% in, 32% down), hence the offsets. */
+  .nox-o { position: relative; display: inline-block; width: 0.64em; height: 0.55em; margin: 0 0.005em 0 0.035em; vertical-align: -0.014em; }
+  .nox-o-bolts { margin-inline: 0.065em 0.035em; } /* the bolts stick out 0.02em a side */
+  /* Custom colours derive a white-topped shell; on light, put back Onyx's dark top. */
+  :global(:root:not(.dark)) .nox-o-bolts :global([id$='-grad-shell'] stop:first-child) { stop-color: #59616b; }
+  .nox-o [data-bot] { position: absolute; left: -0.213em; top: -0.29em; width: 1.066em; }
+  .nox-o :global([id$='-shadow']) { display: none; }
+  #hero-bot :global([id$='-nox']) { cursor: pointer; } /* boop him (landing-client.ts) */
+  @media (prefers-reduced-motion: no-preference) {
+    .rise { animation: rise 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+  /* The first-visit intro (Base.astro adds html.intro before paint; landing-client.ts plays it, then removes it). */
+  :global(html.intro [data-intro]), :global(html.intro) #hero-bot { opacity: 0; }
+  :global(html.intro) .rise { animation: none; }
+  :global(html.intro) #stage { overflow: visible; } /* Nox starts outside the card */
+</style>
+
+<script>
+  import { initLanding } from '../landing-client.ts';
+  initLanding();
+</script>

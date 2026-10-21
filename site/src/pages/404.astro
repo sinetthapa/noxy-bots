@@ -1,0 +1,11 @@
+---
+import { button } from '../../../studio/src/components/ui/button.tsx';
+import Base from '../layouts/Base.astro';
+---
+<Base title="Not found · Noxy" description="This page doesn't exist.">
+  <section class="mx-auto grid max-w-[1180px] gap-4 px-4 pt-16">
+    <h1 class="text-4xl font-bold tracking-[-0.02em]">Nothing here</h1>
+    <p class="text-muted-foreground">This page doesn't exist.</p>
+    <p><a href="/" class={button({ variant: 'primary' })}>Go home</a></p>
+  </section>
+</Base>

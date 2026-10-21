@@ -1,0 +1,45 @@
+---
+// The site header (M5 spec §4.3): wordmark home (noxy + the section: bots, studio, docs), page links, GitHub, the scheme button outside /studio.
+// At 860px and below the links fold into a native <details> menu, so it needs no script. On /studio it is the app bar
+// (2026-10-15): full width, 56px, and the studio's own scheme button in #studio-bar (App portals it in), where the other pages
+// have theirs. Privacy is in the footer, and at the foot of the studio's sidebar (the user, 2026-10-18).
+import { Menu, Moon, Sun } from 'lucide-react';
+import { button } from '../../../studio/src/components/ui/button.tsx';
+import { current, LINKS, NAV, pathOf } from '../site.ts';
+import Brand from './Brand.astro';
+
+const { studio = false } = Astro.props as { studio?: boolean };
+const here = pathOf(Astro.url);
+const section = studio ? 'studio' : current(here, '/docs') ? 'docs' : 'bots';
+const link = 'rounded-lg px-2.5 py-1.5 font-display text-[13px] font-semibold text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground aria-[current=true]:text-foreground';
+---
+<header data-intro="1" class:list={['mx-auto flex w-full items-center gap-2 px-4', studio ? 'h-14' : 'max-w-[1180px] pt-5']}>
+  <a href="/" class="mr-auto flex items-center gap-2 font-display text-2xl font-bold tracking-[-0.02em]"><img src="/nox.svg" alt="" width="36" height="30" /><span>noxy<span class="font-normal">{section}</span></span></a>
+  <nav aria-label="Site" class="hidden items-center gap-1 min-[861px]:flex">
+    {NAV.map(([href, label]) => <a href={href} class={link} aria-current={current(here, href)}>{label}</a>)}
+    <a href={LINKS.github} rel="noopener" class={link} data-track="github" aria-label="GitHub"><Brand name="github" /></a>
+  </nav>
+  {studio && <div id="studio-bar" class="contents" />}
+  {!studio && (
+    <button type="button" id="scheme" data-scheme="light" class={button({ variant: 'ghost', size: 'icon' })} aria-label="Colour scheme">
+      <Sun className="scheme-light" /><Moon className="scheme-dark" />
+    </button>
+  )}
+  <details class="relative min-[861px]:hidden">
+    <summary class={button({ size: 'icon' }) + ' list-none [&::-webkit-details-marker]:hidden'} aria-label="Menu"><Menu /></summary>
+    <nav aria-label="Site" class="card absolute right-0 z-30 mt-2 grid min-w-44 gap-1 p-2">
+      {NAV.map(([href, label]) => <a href={href} class={link} aria-current={current(here, href)}>{label}</a>)}
+      <a href={LINKS.github} rel="noopener" class={link} data-track="github">GitHub</a>
+    </nav>
+  </details>
+</header>
+<style>
+  #scheme :global(svg) { display: none; }
+  #scheme[data-scheme='light'] :global(.scheme-light),
+  #scheme[data-scheme='dark'] :global(.scheme-dark) { display: block; }
+</style>
+<script>
+  import { schemeButton } from '../scheme.ts';
+  const b = document.getElementById('scheme');
+  if (b) schemeButton(b);
+</script>

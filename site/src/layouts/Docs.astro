@@ -1,0 +1,78 @@
+---
+// A docs page (M5 spec §6.1): the page list left (a menu at 860px and below), the page at most 720px wide, its sections right
+// from 1180px, prev/next at the bottom, then the site footer.
+import type { MarkdownHeading } from 'astro';
+import { getCollection } from 'astro:content';
+import { ArrowLeft, ArrowRight, Copy } from 'lucide-react';
+import { button } from '../../../studio/src/components/ui/button.tsx';
+import { byOrder, heading, pagePath, type DocPage } from '../docs.ts';
+import Base from './Base.astro';
+
+interface Props {
+  page: DocPage;
+  headings: MarkdownHeading[];
+  /** The page's Markdown copy, for Copy page as Markdown. */
+  md: string;
+}
+const { page, headings, md } = Astro.props;
+const pages = (await getCollection('docs')).map((e) => ({ id: e.id, ...e.data })).sort(byOrder);
+const i = pages.findIndex((p) => p.id === page.id);
+const [prev, next] = [pages[i - 1], pages[i + 1]];
+const toc = headings.filter((h) => h.depth === 2);
+const item = 'block rounded-lg px-2.5 py-1.5 font-display text-[13px] font-semibold text-muted-foreground hover:bg-muted hover:text-foreground aria-[current=page]:bg-muted aria-[current=page]:text-foreground';
+---
+<Base title={`${page.title} · Noxy docs`} description={page.description}>
+  <!-- Demos float Nox over a soft shadow, like the studio's (.stage-bot in styles.css) -->
+  <svg aria-hidden="true" class="absolute size-0"><filter id="stage-shadow" y="-150%" height="400%"><feGaussianBlur stdDeviation="9" /></filter></svg>
+  <div class="mx-auto grid max-w-[1180px] gap-6 px-4 pt-8 min-[861px]:grid-cols-[200px_minmax(0,720px)] min-[861px]:pt-12 min-[1180px]:grid-cols-[200px_minmax(0,720px)_180px]">
+    <nav aria-label="Docs" class="hidden min-[861px]:block"><ul class="sticky top-6 grid gap-0.5">{pages.map((p) => <li><a href={pagePath(p.id)} class={item} aria-current={p.id === page.id ? 'page' : undefined}>{p.title}</a></li>)}</ul></nav>
+    <details class="relative min-[861px]:hidden">
+      <summary class={button() + ' list-none [&::-webkit-details-marker]:hidden'}>Docs: {page.title}</summary>
+      <nav aria-label="Docs" class="card absolute z-30 mt-2 grid min-w-56 p-2"><ul class="grid gap-0.5">{pages.map((p) => <li><a href={pagePath(p.id)} class={item} aria-current={p.id === page.id ? 'page' : undefined}>{p.title}</a></li>)}</ul></nav>
+    </details>
+    <article class="doc grid min-w-0 content-start">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <h1 class="text-[clamp(32px,5vw,48px)] leading-none font-bold tracking-[-0.03em]">{heading(page.title)}</h1>
+        <button type="button" id="copy-page" data-md={md} class={button({ size: 'sm' })}><Copy /> <span>Copy page as Markdown</span></button>
+      </div>
+      <p class="mt-3 text-base text-pretty text-muted-foreground">{page.description}</p>
+      <slot />
+      <nav aria-label="Previous and next" class="mt-12 grid grid-cols-2 gap-3">
+        {prev ? <a href={pagePath(prev.id)} class="card grid gap-1 p-4 hover:bg-muted"><span class="flex items-center gap-1 text-xs text-muted-foreground"><ArrowLeft className="size-3.5" /> Previous</span><span class="font-display font-semibold">{prev.title}</span></a> : <span />}
+        {next && <a href={pagePath(next.id)} class="card grid justify-items-end gap-1 p-4 text-right hover:bg-muted"><span class="flex items-center gap-1 text-xs text-muted-foreground">Next <ArrowRight className="size-3.5" /></span><span class="font-display font-semibold">{next.title}</span></a>}
+      </nav>
+    </article>
+    {toc.length > 0 && (
+      <nav aria-label="On this page" class="hidden min-[1180px]:block">
+        <div class="sticky top-6 grid gap-1 text-[13px]">
+          <p class="font-display font-semibold">On this page</p>
+          {toc.map((h) => <a href={`#${h.slug}`} class="leading-6 text-muted-foreground hover:text-foreground">{h.text}</a>)}
+        </div>
+      </nav>
+    )}
+  </div>
+</Base>
+
+<style is:global>
+  /* The page's own text (MDX): DESIGN.md type, the 4px grid, links underlined in orange like the landing's. */
+  .doc > h2 { margin-top: 48px; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; scroll-margin-top: 24px; }
+  .doc > h3 { margin-top: 28px; font-size: 18px; font-weight: 700; }
+  .doc > p, .doc > ul, .doc > ol { margin-top: 12px; max-width: 68ch; font-size: 15px; line-height: 1.65; }
+  .doc > ul { list-style: disc; padding-left: 20px; }
+  .doc > ol { list-style: decimal; padding-left: 20px; }
+  .doc li + li { margin-top: 4px; }
+  .doc :is(p, li, td) > a { text-decoration: underline; text-decoration-color: var(--primary); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .doc :is(p, li, td) > code { border-radius: 6px; background: var(--muted); padding: 1px 5px; font-family: var(--font-mono); font-size: 0.88em; }
+  .doc table { border-collapse: collapse; font-size: 14px; }
+  .doc th { text-align: left; font-family: var(--font-display); font-weight: 600; }
+  .doc :is(th, td) { border-bottom: 1px solid var(--border); padding: 8px 16px 8px 0; vertical-align: top; }
+  /* Demos and State chips keep Nox's room (its viewBox, nox.frame) before the script draws it, so the page doesn't shift. */
+  .doc .stage-bot { aspect-ratio: 985 / 830; }
+  /* On this page glides to its section (the user, 2026-10-18), unless motion is reduced. */
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<script>
+  import { initDocs } from '../docs-client.ts';
+  initDocs();
+</script>

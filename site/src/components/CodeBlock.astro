@@ -1,0 +1,10 @@
+---
+// A docs page's ``` code block (mapped to <pre> in [...slug].astro): dark in both schemes, with a Copy button. docs-client.ts
+// colours it with highlight() and wires Copy (an `npm i` line counts as install_copied).
+import { Copy } from 'lucide-react';
+import { button } from '../../../studio/src/components/ui/button.tsx';
+---
+<div class="dark card relative my-5 overflow-hidden text-foreground" data-fence>
+  <button type="button" class={button({ size: 'sm' }) + ' absolute top-2 right-2'}><Copy /> <span>Copy</span></button>
+  <pre class="overflow-x-auto bg-background p-5 pr-24 font-mono text-[13px] leading-relaxed"><slot /></pre>
+</div>

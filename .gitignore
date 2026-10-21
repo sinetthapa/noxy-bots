@@ -1,0 +1,11 @@
+node_modules/
+dist/
+scratchpad/
+.DS_Store
+graphify-out/
+dist-lab/
+dist-studio/
+dist-site/
+.wrangler/
+site/.astro/
+docs/internal/

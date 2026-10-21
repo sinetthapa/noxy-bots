@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>noxy-bots examples</title>
+    <style>
+      body { font: 15px/1.5 system-ui, sans-serif; margin: 32px; color: #1d2329; }
+      section { margin-bottom: 40px; }
+      .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; }
+      #driven { width: 200px; }
+      button { margin: 4px 4px 0 0; }
+    </style>
+  </head>
+  <body>
+    <h1>noxy-bots</h1>
+
+    <section>
+      <h2>&lt;noxy-bot&gt;</h2>
+      <div class="row">
+        <noxy-bot label="Nox, idle"></noxy-bot>
+        <noxy-bot state="thinking" theme="midnight"></noxy-bot>
+        <noxy-bot state="happy" theme="mint" ears="antenna" eyes="round"></noxy-bot>
+        <noxy-bot state="sleep" theme="bubblegum" bolts="none"></noxy-bot>
+        <noxy-bot state="speaking" theme="onyx" body="box" eye-size="1.2"></noxy-bot>
+      </div>
+    </section>
+
+    <section>
+      <h2>createBot()</h2>
+      <p>Its eyes follow your pointer.</p>
+      <div id="driven"></div>
+      <div id="buttons"></div>
+    </section>
+
+    <section>
+      <h2>React</h2>
+      <div id="react"></div>
+    </section>
+
+    <script type="module" src="./main.ts"></script>
+    <script type="module" src="./react.tsx"></script>
+  </body>
+</html>

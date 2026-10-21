@@ -1,0 +1,7 @@
+---
+import { App } from '../../../studio/src/App.tsx';
+import Base from '../layouts/Base.astro';
+---
+<Base title="Noxy Studio" description="Tune a Noxy bot's look, mood and motion, then copy the code or export SVG, PNG, MP4 or Lottie." studio>
+  <App client:only="react" />
+</Base>

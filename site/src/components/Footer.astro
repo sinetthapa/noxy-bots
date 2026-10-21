@@ -1,0 +1,29 @@
+---
+// The site footer (M5 spec §4.3), as the user laid it out 2026-10-18: the project name, its description and the socials (icons)
+// on the left, every page in the middle, the support call-out (no card here) on the right, and the licences centred along the
+// bottom. About shows the socials and the support card in its own text, so its footer leaves them out.
+import { DESCRIPTION, NAV, pathOf } from '../site.ts';
+import CtaButtons from './CtaButtons.astro';
+import Support from './Support.astro';
+
+const ctas = pathOf(Astro.url) !== '/about';
+const label = 'font-display text-sm font-semibold text-foreground';
+---
+<footer class="mx-auto mt-16 grid w-full max-w-[1180px] gap-10 border-t border-border px-4 pt-10 pb-8 text-sm text-muted-foreground md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-start md:gap-x-16">
+  <div class="grid max-w-[40ch] content-start justify-items-start gap-4">
+    <p class="font-display text-[clamp(40px,6vw,56px)] leading-none font-bold tracking-[-0.03em] text-foreground">noxy<span class="font-normal">bots</span></p>
+    <p>{DESCRIPTION}</p>
+    {ctas && (
+      <div class="mt-2 grid gap-2">
+        <h2 class={label}>follow me</h2>
+        <CtaButtons icons />
+      </div>
+    )}
+  </div>
+  <nav aria-labelledby="footer-links" class="grid content-start gap-2">
+    <h2 id="footer-links" class={label}>links</h2>
+    <ul class="grid gap-2">{[...NAV, ['/privacy', 'Privacy']].map(([href, text]) => <li><a href={href} class="hover:text-foreground">{text}</a></li>)}</ul>
+  </nav>
+  {ctas && <Support card={false} />}
+  <p class="pt-6 text-center text-xs md:col-span-3">Code MIT · Nox art CC BY 4.0 · © 2026 Sinet Thapa</p>
+</footer>

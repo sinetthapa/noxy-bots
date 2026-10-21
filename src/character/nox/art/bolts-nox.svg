@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-180 -60 985 830" fill="none">
+  <!-- Nox bolts: the LEFT bolt only. Accent-coloured shapes light up with the glow. -->
+        <rect x="7.35938" y="438.53" width="26.8553" height="112.472" rx="13.4276" fill="#FA6C2E"/>
+        <rect x="0" y="466.792" width="23.53" height="55.9486" rx="11.765" fill="#FA6C2E"/>
+  <circle id="pivot" cx="34" cy="495" r="6" fill="#FF00FF"/>
+</svg>

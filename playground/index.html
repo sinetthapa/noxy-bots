@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nox Playground</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0e1116;
+        --panel: #161b22;
+        --line: #2a313c;
+        --text: #c9d1d9;
+        --dim: #8b949e;
+        --accent: #2ec7e6;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 13px/1.4 system-ui, sans-serif;
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        height: 100vh;
+      }
+      main { display: grid; grid-template-rows: 1fr auto; min-width: 0; min-height: 0; }
+      #stage { display: grid; place-items: center; overflow: hidden; min-height: 0; }
+      #stage svg { width: min(460px, 90%); height: auto; max-height: 100%; }
+      #board { border-top: 1px solid var(--line); padding: 12px 16px; display: grid; gap: 6px; }
+      .row { display: grid; grid-template-columns: 72px 1fr; align-items: start; gap: 8px; }
+      .row > span { color: var(--dim); padding-top: 5px; }
+      .row button {
+        background: var(--panel);
+        color: var(--text);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 4px 10px;
+        margin: 0 4px 4px 0;
+        font: inherit;
+        cursor: pointer;
+      }
+      .row button:hover { border-color: var(--dim); }
+      .row button[aria-pressed='true'] { border-color: var(--accent); color: var(--accent); }
+      .readout {
+        margin: 4px 0 0;
+        font: 12px/1.5 ui-monospace, monospace;
+        color: var(--dim);
+        white-space: pre-wrap;
+        height: 256px;
+        overflow: hidden;
+      }
+      #pane { border-left: 1px solid var(--line); overflow: auto; padding: 8px; }
+      @media (max-width: 800px) {
+        body { grid-template-columns: 1fr; height: auto; }
+        #stage svg { width: min(360px, 90%); }
+        #pane { border-left: 0; border-top: 1px solid var(--line); }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="stage"></div>
+      <div id="board"></div>
+    </main>
+    <aside id="pane"></aside>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-180 -60 985 830" fill="none">
+  <!-- Placeholder body: a rounded-square head with a rounded-rect screen. Same frame and anchors as Nox where they fit. -->
+  <defs>
+    <linearGradient id="grad-shell" x1="117.815" y1="246.848" x2="508.313" y2="707.537" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#92A7AD"/>
+    </linearGradient>
+    <linearGradient id="grad-face" x1="312.25" y1="285" x2="312.25" y2="675" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#313E4F"/><stop offset="1" stop-color="#12171D"/>
+    </linearGradient>
+  </defs>
+  <ellipse id="shadow" cx="312.25" cy="735" rx="220" ry="18" fill="#000000" opacity="0.22"/>
+  <g id="shell"><rect id="head-shell" x="40" y="215" width="544.5" height="490" rx="110" fill="url(#grad-shell)"/></g>
+  <g id="screen"><rect id="face-screen" x="75" y="285" width="474.5" height="390" rx="70" fill="url(#grad-face)"/></g>
+  <circle id="axis" cx="312.25" cy="480" r="6" fill="#FF00FF"/>
+  <circle id="eye-l" cx="190.065" cy="480" r="6" fill="#FF00FF"/>
+  <circle id="ear-l" cx="133" cy="285" r="6" fill="#FF00FF"/>
+  <circle id="bolt-l" cx="40" cy="495" r="6" fill="#FF00FF"/>
+  <circle id="mouth" cx="312.25" cy="590" r="6" fill="#FF00FF"/>
+  <circle id="tilt" cx="312.25" cy="480" r="6" fill="#FF00FF"/>
+  <circle id="squash" cx="312.25" cy="705" r="6" fill="#FF00FF"/>
+  <circle id="symbols" cx="312.25" cy="112" r="6" fill="#FF00FF"/>
+  <circle id="badge" cx="705" cy="240" r="6" fill="#FF00FF"/>
+  <circle id="zzz-from" cx="380" cy="190" r="6" fill="#FF00FF"/>
+  <circle id="zzz-to" cx="470" cy="30" r="6" fill="#FF00FF"/>
+</svg>

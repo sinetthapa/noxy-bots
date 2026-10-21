@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Noxy Studio</title>
+    <link rel="icon" href="data:," />
+    <script>
+      // Dark before first paint, from the saved scheme (see src/prefs.ts); storage can throw in private windows.
+      try {
+        var s = localStorage.getItem('noxy-studio-scheme');
+        if (s === 'dark') document.documentElement.classList.add('dark');
+      } catch (e) {}
+    </script>
+  </head>
+  <body class="studio">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

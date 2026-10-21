@@ -1,0 +1,70 @@
+---
+title: Getting started
+description: Install noxy-bots, then put Nox on your page with an HTML tag, a React component or plain JS.
+order: 1
+---
+
+## install
+
+```sh
+npm i noxy-bots
+```
+
+## your first Nox
+
+Here's Nox as it comes. Pick a tab for the way you build, copy it and you're done.
+
+<Demo attrs="" />
+
+Rather click than type? Make a look in the [studio](/studio) and copy its code from there.
+
+## the element
+
+The tag works anywhere HTML does. Import it once, then set attributes like any other element. Nox is 120px wide; give it a `width` in CSS and the height follows.
+
+```html
+<script type="module">
+  import 'noxy-bots/element';
+</script>
+
+<noxy-bot state="thinking" theme="mint" style="width: 200px"></noxy-bot>
+```
+
+Change an attribute later and Nox changes with it. For the methods, `el.bot` gives you the bot once it's on the page:
+
+```js
+const nox = document.querySelector('noxy-bot');
+nox.bot.play('success');
+```
+
+## React
+
+`<NoxyBot>` takes the same options as props, plus `className` and `style`. A `ref` gives you the bot. It works with React 18 and 19.
+
+```jsx
+import { useRef } from 'react';
+import { NoxyBot } from 'noxy-bots/react';
+
+export function Helper({ busy }) {
+  const nox = useRef(null);
+  return (
+    <>
+      <NoxyBot ref={nox} state={busy ? 'thinking' : 'idle'} />
+      <button onClick={() => nox.current?.play('laugh')}>Tickle</button>
+    </>
+  );
+}
+```
+
+## plain JS
+
+`createBot` draws Nox into any element and hands you the bot.
+
+```js
+import { createBot } from 'noxy-bots';
+
+const bot = createBot(document.getElementById('nox'), { state: 'happy' });
+bot.play('success');
+```
+
+Nox skips its frames while it's off screen, so a page full of them stays light.

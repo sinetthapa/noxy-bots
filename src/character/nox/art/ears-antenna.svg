@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-180 -60 985 830" fill="none">
+  <!-- Placeholder ears: an antenna (stalk and ball) leaning out, hinged at its base so droop and perk still read. LEFT side only. -->
+  <path d="M127 290L92 150L104 146L139 290Z" fill="#95A9AF"/>
+  <circle cx="98" cy="138" r="24" fill="#FA6C2E"/>
+  <circle id="pivot" cx="133" cy="285" r="6" fill="#FF00FF"/>
+</svg>

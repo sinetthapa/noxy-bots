@@ -1,0 +1,14 @@
+---
+// <Demo attrs="state=thinking theme=mint" /> in a docs page (M5 spec §6.2): studio link parameters, checked at build (a typo fails
+// it), shown as a live Nox in a plain card, floating over the blurred shadow (no mesh), with its HTML, React and JS below.
+import { FORMATS, snippet } from '../../../studio/src/snippets.ts';
+import { demoState, nextId } from '../docs.ts';
+import CodeTabs from './CodeTabs.astro';
+
+const s = demoState(Astro.props.attrs);
+const TABS = FORMATS.filter(([f]) => f !== 'json');
+---
+<figure class="card my-6 grid overflow-hidden" data-demo={JSON.stringify(s)}>
+  <div class="grid place-items-center px-4 pt-14 pb-6"><div class="stage-bot w-[min(180px,55%)]" aria-hidden="true"></div></div>
+  <CodeTabs id={nextId()} tabs={TABS} code={snippet(s, 'html')} />
+</figure>

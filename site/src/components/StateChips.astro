@@ -1,0 +1,20 @@
+---
+// <StateChips layer="emotion" /> on the States page (M5 spec §6.1): one layer's states on their own Nox; click one to play it.
+// Kept states are chips with one selected; events play once, so they're dashed with no selected state (DESIGN.md).
+import { NAMES } from 'noxy-bots';
+import { button } from '../../../studio/src/components/ui/button.tsx';
+
+interface Props {
+  layer: keyof typeof NAMES;
+}
+const { layer } = Astro.props;
+const event = layer === 'event';
+const first = event ? 'idle' : NAMES[layer][0];
+const chip = event ? button({ variant: 'event' }) : button() + ' aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:shadow-[0_2px_0_var(--accent-drop)]';
+---
+<div class="card my-6 grid items-center gap-4 p-4 min-[600px]:grid-cols-[150px_1fr]" data-states={first}>
+  <div class="grid place-items-center pt-10"><div class="stage-bot w-28" aria-hidden="true"></div></div>
+  <div class="flex flex-wrap gap-1.5" role="group" aria-label={`${layer[0].toUpperCase()}${layer.slice(1)} states`}>
+    {NAMES[layer].map((n) => <button type="button" data-play={n} aria-pressed={event ? undefined : String(n === first)} class={chip}>{n}</button>)}
+  </div>
+</div>

@@ -1,0 +1,13 @@
+---
+// The support call-out (the user, 2026-10-16): Buy Me a Coffee as "Buy me a beer", in its own card so it stands apart from the socials.
+// Orange, as the card's one main action (DESIGN.md). The footer shows it without the card, its title a small label like the footer's others (the user, 2026-10-18).
+import { button } from '../../../studio/src/components/ui/button.tsx';
+import { LINKS } from '../site.ts';
+
+const { card = true } = Astro.props as { card?: boolean };
+---
+<aside class:list={['grid max-w-[52ch] justify-items-start gap-2 text-sm text-muted-foreground', card && 'card p-4']}>
+  <h2 class:list={['text-foreground', card ? 'text-xl font-bold' : 'font-display text-sm font-semibold']}>like Nox?</h2>
+  <p>Noxybots is free. If Nox made your project cuter, a beer keeps me building more bots. :)</p>
+  <a href={LINKS.coffee} rel="noopener" class={button({ variant: 'primary' }) + ' mt-1'} data-track="coffee"><span aria-hidden="true">🍺</span> Buy me a beer</a>
+</aside>

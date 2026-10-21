@@ -1,0 +1,43 @@
+---
+title: States
+description: All 29 of Nox's states, in four layers. Click one to see it.
+order: 2
+---
+
+Nox stacks its state in layers. The base is what it's up to in the background, an activity sits on top of that, an emotion colours both, and an event plays once and then lets go.
+
+## base
+
+<StateChips layer="base" />
+
+Setting a base with `state()` (or the attribute) also clears the activity and the emotion. `bot.base()` changes the base alone.
+
+## activity
+
+<StateChips layer="activity" />
+
+Setting an activity with `state()` (or the attribute) wakes a sleeping Nox; `bot.activity()` leaves it asleep. `bot.activity(null)` clears it.
+
+## emotion
+
+<StateChips layer="emotion" />
+
+`bot.emotion('happy', 3000)` shows it for 3 seconds, then lets go. `bot.emotion(null)` clears it.
+
+## event
+
+<StateChips layer="event" />
+
+Events play once, then Nox goes back to what it was doing. `bot.notify()` plays `notification` and keeps the badge up until you call `bot.seen()`.
+
+## setting a state
+
+The `state` attribute and prop take any of the 29. In JS, `state()` does the same, or name the layer:
+
+```js
+bot.state('thinking'); // any state, from any layer
+bot.base('drowsy');
+bot.activity('listening');
+bot.emotion('curious');
+bot.play('idea');
+```

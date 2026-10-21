@@ -1,0 +1,28 @@
+# Releases (M5 spec §10.3): on pushes to main, opens or updates the version PR; merging it publishes to npm with provenance.
+name: Release
+on:
+  push:
+    branches: [main]
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+jobs:
+  release:
+    if: github.repository == 'sinetthapa/noxy-bots' # never from the private nox-bot repo
+    environment: npm # main only, and the npm trusted publisher names it; create it before the first run (M5 spec §11.1)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          publish-script: npm run release
+          version-script: npm run version-packages # the action runs this without a shell, so the && lives in package.json
+          commit-message: 'chore: version packages'
+          pr-title: 'chore: version packages'
