@@ -4,8 +4,9 @@
   "name": "noxy",
   "main": "site/worker.ts",
   "compatibility_date": "2026-10-01",
-  "workers_dev": false, // no workers.dev URL; the launch step adds the noxybots.com route
-  "preview_urls": true, // branch Previews from Workers Builds stay reachable until launch
+  "workers_dev": false, // no workers.dev URL
+  "routes": [{ "pattern": "noxybots.com", "custom_domain": true }], // launch (M5 spec §9.1); www redirects by a zone rule
+  "preview_urls": false, // Workers Builds builds main only since launch (audit run-2, lead 2)
   "previews": {}, // Previews don't inherit production settings; top-level assets are enough
   "assets": {
     "directory": "dist-site",
