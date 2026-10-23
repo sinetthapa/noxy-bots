@@ -1,5 +1,5 @@
 // Site-wide constants (M5 spec §4.3, §8.1). LAUNCHED shows the install and GitHub links (launch step 8).
-export const LAUNCHED = false;
+export const LAUNCHED = true;
 export const REGION: 'us' | 'eu' = 'us'; // the PostHog project's region, chosen when it's created (launch step 11.0)
 export const LINKS = {
   github: 'https://github.com/sinetthapa/noxy-bots',
